@@ -14,24 +14,57 @@
 
   <name>TextClusterer</name>
   <description>Pluggable text clustering library for Java</description>
+  <url>https://github.com/sayfjawad/text-clusterer</url>
 
-  <!-- ======================= -->
-  <!-- Java Version            -->
-  <!-- ======================= -->
+  <licenses>
+    <license>
+      <name>The Unlicense</name>
+      <url>https://unlicense.org</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Multicode</name>
+      <email>info@multicode.nl</email>
+      <organization>Multicode</organization>
+      <organizationUrl>https://github.com/multicode</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/sayfjawad/text-clusterer.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/sayfjawad/text-clusterer.git</developerConnection>
+    <url>https://github.com/sayfjawad/text-clusterer/tree/main</url>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/sayfjawad/text-clusterer/issues</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>GitHub Actions</system>
+    <url>https://github.com/sayfjawad/text-clusterer/actions</url>
+  </ciManagement>
+
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.jupiter.version>5.10.2</junit.jupiter.version>
     <assertj.version>3.27.7</assertj.version>
     <jqwik.version>1.8.3</jqwik.version>
+    <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+    <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+    <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
+    <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
+    <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
   </properties>
 
-  <!-- ======================= -->
-  <!-- Dependencies            -->
-  <!-- ======================= -->
   <dependencies>
 
-    <!-- JUnit 5 Jupiter -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
@@ -39,7 +72,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- AssertJ fluent assertions -->
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
@@ -47,7 +79,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- jqwik property-based testing (stable version) -->
     <dependency>
       <groupId>net.jqwik</groupId>
       <artifactId>jqwik</artifactId>
@@ -57,27 +88,124 @@
 
   </dependencies>
 
-  <!-- ======================= -->
-  <!-- Build Configuration     -->
-  <!-- ======================= -->
+  <distributionManagement>
+    <snapshotRepository>
+      <id>central</id>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <profiles>
+
+    <profile>
+      <id>ossrh-snapshot</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <configuration>
+              <skipPublishing>true</skipPublishing>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <configuration>
+              <skipPublishing>false</skipPublishing>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>${maven-source-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>${maven-javadoc-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven-gpg-plugin.version}</version>
+            <configuration>
+              <keyname>8CADEF5A749AF3F1</keyname>
+              <gpgArguments>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+            </configuration>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
+
   <build>
     <plugins>
 
-      <!-- Java 21 compiler -->
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>${central-publishing-maven-plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
+          <autoPublish>true</autoPublish>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <release>${maven.compiler.release}</release>
         </configuration>
       </plugin>
 
-      <!-- JUnit 5 + jqwik test runner -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.2.5</version>
+        <version>${maven-surefire-plugin.version}</version>
         <configuration>
           <useModulePath>false</useModulePath>
         </configuration>
