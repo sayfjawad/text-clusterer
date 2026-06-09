@@ -4,18 +4,12 @@ import nl.multicode.testdata.TestData;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * AutoGroupPerformanceTest is a test class designed to validate the performance
- * of the AutoGroup functionality. It includes tests to ensure that the
- * processing of large input data completes within a reasonable time frame.
- */
-class AutoGroupPerformanceTest {
+class SubstringClustererPerformanceTest {
 
-    private final AutoGroup autoGroup = new AutoGroup();
+    private final TextClusterer clusterer = new SubstringClusterer();
 
     @Test
     void largeInputCompletesWithinReasonableTime() {
@@ -23,9 +17,7 @@ class AutoGroupPerformanceTest {
 
         assertThat(
                 Duration.ofMillis(
-                        measureMillis(() ->
-                                autoGroup.autoGroupSentences(input, 5, 3)
-                        )
+                        measureMillis(() -> clusterer.cluster(input, 5, 3))
                 )
         ).isLessThan(Duration.ofMillis(200));
     }

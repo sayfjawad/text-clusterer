@@ -1,23 +1,29 @@
 package nl.multicode;
 
-import java.util.*;
-import nl.multicode.model.AutoGroupResult;
+import nl.multicode.model.ClusterResult;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Type-safe Java implementation of AutoGroup
- *
- * Author: Sayf Jawad
+ * Brute-force substring-based clustering. Enumerates all substrings explicitly.
+ * Simpler than the SAM-based approach; suitable as a reference or for small inputs.
  */
-public class AutoGroupBruteForce {
+public class SubstringClustererBruteForce implements TextClusterer {
 
-    public AutoGroupResult autoGroupSentences(
+    @Override
+    public ClusterResult cluster(
             List<String> input,
             int minimalDenominatorLength,
             int minimumGroupSize
     ) {
 
         if (input == null || input.isEmpty()) {
-            return new AutoGroupResult(Map.of(), Map.of());
+            return new ClusterResult(Map.of(), Map.of());
         }
 
         Map<Integer, String> original = index(input);
@@ -62,10 +68,8 @@ public class AutoGroupBruteForce {
             }
         }
 
-        return new AutoGroupResult(groups, ungrouped);
+        return new ClusterResult(groups, ungrouped);
     }
-
-    /* ===================== Internals ===================== */
 
     private Set<String> getKeyList(Collection<String> sentences, int minLength) {
         int minKeyLength = Math.max(4, minLength);
@@ -143,4 +147,3 @@ public class AutoGroupBruteForce {
         return indexed;
     }
 }
-

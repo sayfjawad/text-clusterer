@@ -3,12 +3,12 @@ package nl.multicode.model;
 import java.util.Collections;
 import java.util.Map;
 
-public final class AutoGroupResult {
+public final class ClusterResult {
 
     private final Map<String, Map<Integer, String>> groups;
     private final Map<Integer, String> ungrouped;
 
-    public AutoGroupResult(
+    public ClusterResult(
             Map<String, Map<Integer, String>> groups,
             Map<Integer, String> ungrouped
     ) {

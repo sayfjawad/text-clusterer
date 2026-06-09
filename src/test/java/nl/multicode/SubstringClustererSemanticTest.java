@@ -1,15 +1,16 @@
 package nl.multicode;
 
-import nl.multicode.model.AutoGroupResult;
+import nl.multicode.model.ClusterResult;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AutoGroupSemanticTest {
+class SubstringClustererSemanticTest {
 
-    private final AutoGroup autoGroup = new AutoGroup();
+    private final TextClusterer clusterer = new SubstringClusterer();
+
     @Test
     void preservesPartialOverlapsNotTokenBased() {
         List<String> input = List.of(
@@ -17,14 +18,12 @@ class AutoGroupSemanticTest {
                 "failedPaymentProcessing"
         );
 
-        AutoGroupResult result =
-                autoGroup.autoGroupSentences(input, 6, 2);
+        ClusterResult result = clusterer.cluster(input, 6, 2);
 
         assertThat(result.hasGroups()).isTrue();
 
         String key = result.getGroups().keySet().iterator().next();
 
-        // Algorithmic guarantee
         assertThat(input.get(0)).contains(key);
         assertThat(input.get(1)).contains(key);
     }
@@ -36,13 +35,11 @@ class AutoGroupSemanticTest {
                 "Error 502: Gateway bad response"
         );
 
-        AutoGroupResult result =
-                autoGroup.autoGroupSentences(input, 5, 2);
+        ClusterResult result = clusterer.cluster(input, 5, 2);
 
         String key = result.getGroups().keySet().iterator().next();
 
         assertThat(input.get(0)).contains(key);
         assertThat(input.get(1)).contains(key);
     }
-
 }

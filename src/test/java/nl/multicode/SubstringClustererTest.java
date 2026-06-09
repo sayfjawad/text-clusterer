@@ -1,16 +1,15 @@
 package nl.multicode;
 
-import nl.multicode.model.AutoGroupResult;
+import nl.multicode.model.ClusterResult;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AutoGroupTest {
+class SubstringClustererTest {
 
-    private final AutoGroup autoGroup = new AutoGroup();
+    private final TextClusterer clusterer = new SubstringClusterer();
 
     @Test
     void groupsSentencesWithCommonSubstring() {
@@ -21,12 +20,12 @@ class AutoGroupTest {
                 "Order created and paid"
         );
 
-        final var result = autoGroup.autoGroupSentences(input, 5, 2);
+        final var result = clusterer.cluster(input, 5, 2);
 
         assertThat(result.hasGroups()).isTrue();
         assertThat(result.getGroups()).hasSize(1);
 
-        final var group =                result.getGroups().entrySet().iterator().next();
+        final var group = result.getGroups().entrySet().iterator().next();
 
         assertThat(group.getKey()).contains("Order created");
         assertThat(group.getValue()).hasSize(3);
@@ -44,7 +43,7 @@ class AutoGroupTest {
                 "no match here"
         );
 
-        final var result = autoGroup.autoGroupSentences(input, 3, 2);
+        final var result = clusterer.cluster(input, 3, 2);
 
         assertThat(result.getGroups()).isNotEmpty();
         final var key = result.getGroups().keySet().iterator().next();
@@ -63,7 +62,7 @@ class AutoGroupTest {
                 "Carrot"
         );
 
-        AutoGroupResult result = autoGroup.autoGroupSentences(input, 4, 2);
+        ClusterResult result = clusterer.cluster(input, 4, 2);
 
         assertThat(result.hasGroups()).isFalse();
         assertThat(result.getGroups()).isEmpty();
@@ -72,7 +71,7 @@ class AutoGroupTest {
 
     @Test
     void emptyInputReturnsEmptyResult() {
-        final var result = autoGroup.autoGroupSentences(List.of(), 4, 2);
+        final var result = clusterer.cluster(List.of(), 4, 2);
 
         assertThat(result.getGroups()).isEmpty();
         assertThat(result.getUngrouped()).isEmpty();
@@ -86,7 +85,7 @@ class AutoGroupTest {
                 "User logged in"
         );
 
-        final var result = autoGroup.autoGroupSentences(input, 6, 3);
+        final var result = clusterer.cluster(input, 6, 3);
 
         assertThat(result.hasGroups()).isFalse();
         assertThat(result.getGroups()).isEmpty();

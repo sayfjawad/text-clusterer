@@ -1,6 +1,5 @@
 package nl.multicode;
 
-import nl.multicode.model.AutoGroupResult;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -9,9 +8,9 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AutoGroupParameterizedTest {
+class SubstringClustererParameterizedTest {
 
-    private final AutoGroup autoGroup = new AutoGroup();
+    private final TextClusterer clusterer = new SubstringClusterer();
 
     static Stream<TestCase> groupingCases() {
         return Stream.of(
@@ -36,8 +35,7 @@ class AutoGroupParameterizedTest {
     @ParameterizedTest
     @MethodSource("groupingCases")
     void groupingScenarios(TestCase tc) {
-        final var result =
-                autoGroup.autoGroupSentences(tc.input, tc.minLen, tc.minGroup);
+        final var result = clusterer.cluster(tc.input, tc.minLen, tc.minGroup);
 
         assertThat(result.hasGroups()).isEqualTo(tc.expectGroups);
     }

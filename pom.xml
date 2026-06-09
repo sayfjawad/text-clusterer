@@ -8,12 +8,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>nl.multicode</groupId>
-  <artifactId>autogroup</artifactId>
+  <artifactId>text-clusterer</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>AutoGroup</name>
-  <description>Type-safe Java implementation of the AutoGroup algorithm</description>
+  <name>TextClusterer</name>
+  <description>Pluggable text clustering library for Java</description>
 
   <!-- ======================= -->
   <!-- Java Version            -->
@@ -22,7 +22,7 @@
     <maven.compiler.release>21</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.jupiter.version>5.10.2</junit.jupiter.version>
-    <assertj.version>3.25.3</assertj.version>
+    <assertj.version>3.27.7</assertj.version>
     <jqwik.version>1.8.3</jqwik.version>
   </properties>
 

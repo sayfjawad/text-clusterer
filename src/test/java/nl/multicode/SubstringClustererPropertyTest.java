@@ -1,16 +1,20 @@
 package nl.multicode;
 
-import net.jqwik.api.*;
-
-import java.util.*;
+import net.jqwik.api.Arbitraries;
+import net.jqwik.api.Arbitrary;
+import net.jqwik.api.Assume;
+import net.jqwik.api.ForAll;
+import net.jqwik.api.Property;
+import net.jqwik.api.Provide;
 import net.jqwik.api.constraints.IntRange;
-import nl.multicode.model.AutoGroupResult;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AutoGroupPropertyTest {
+class SubstringClustererPropertyTest {
 
-    private final AutoGroup autoGroup = new AutoGroup();
+    private final TextClusterer clusterer = new SubstringClusterer();
 
     @Property
     void groupKeysAreSubstringsOfAllGroupedSentences(
@@ -19,8 +23,7 @@ class AutoGroupPropertyTest {
     ) {
         Assume.that(sentences.size() >= minGroup);
 
-        final var result =
-                autoGroup.autoGroupSentences(sentences, 2, minGroup);
+        final var result = clusterer.cluster(sentences, 2, minGroup);
 
         result.getGroups().forEach((key, group) -> {
             group.values().forEach(sentence ->
