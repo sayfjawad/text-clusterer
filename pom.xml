@@ -7,7 +7,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>nl.multicode</groupId>
+  <groupId>nl.multicode.text</groupId>
   <artifactId>text-clusterer</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
